@@ -20,6 +20,7 @@
 		}
 		body {
 			display: flex;
+			flex-direction: column;
 			margin: 0;
 			padding: 16px;
 			align-items: center;
@@ -34,9 +35,6 @@
 		}
 		.content > * {
 			margin-bottom: 16px;
-		}
-		h1 {
-			text-align: center;
 		}
 		#message, #result {
 			min-height: 100px;
@@ -78,8 +76,8 @@
 		}
 	</style>
 
+	<h1>IDEA Cipher</h1>
 	<div class="content">
-		<h1>IDEA Cipher</h1>
 		<div contenteditable id="message" onfocus="select(this)">Message</div>
 		<div class="line">
 			<input type="text" placeholder="Key" id="key" autofocus oninput="this.className = ''">
@@ -95,6 +93,7 @@
 		</div>
 		<div id="result" onclick="copy(this)">Result</div>
 	</div>
+	<a href="https://github.com/mytecor/idea-cipher">GitHub</a>
 
 	<script>
 		const selection = window.getSelection()
