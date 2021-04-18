@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>IDEA cipher</title>
+</head>
+<body>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+		* {
+			box-sizing: border-box;
+			outline: none;
+		}
+		html {
+			height: 100%;
+			user-select: none;
+			font-family: Roboto, sans-serif;
+		}
+		body {
+			display: flex;
+			margin: 0;
+			padding: 16px;
+			align-items: center;
+			justify-content: center;
+			min-height: 100%;
+		}
+		.content {
+			display: flex;
+			flex-direction: column;
+			max-width: 800px;
+			width: 100%;
+		}
+		.content > * {
+			margin-bottom: 16px;
+		}
+		h1 {
+			text-align: center;
+		}
+		#message, #result {
+			min-height: 100px;
+			user-select: all;
+			word-break: break-all;
+		}
+		#key {
+			padding: 8px;
+			display: block;
+			flex: 1;
+		}
+		#key, #message, button, #result {
+			border: 1px solid black;
+			border-radius: 4px;
+			padding: 8px;
+			transition: 0.2s;
+		}
+		#key:focus, #message:focus, button:hover {
+			box-shadow: 0 0 0 2px black;
+		}
+		.buttons {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: flex-end;
+			align-items: center;
+			margin: 0 -16px 8px 0;
+		}
+		.buttons > * {
+			margin: 0 16px 8px 0;
+		}
+		button {
+			margin-left: 8px;
+			background: #eee;
+		}
+	</style>
+
+	<div class="content">
+		<h1>IDEA Cipher</h1>
+		<div contenteditable id="message" onfocus="select(this)">Message</div>
+		<div class="buttons">
+			<input type="text" placeholder="Key" id="key" autofocus>
+			<div>
+				<b>Mode:</b>
+				<label style="display: inline-flex; align-items: center">
+					<input type="radio" checked style="margin: 4px">
+					ECB
+				</label>
+			</div>
+			<button onclick="encrypt()">Encrypt</button>
+			<button onclick="decrypt()">Decrypt</button>
+		</div>
+		<div id="result" onclick="copy(this)">Result</div>
+	</div>
+
+	<script>
+		const selection = window.getSelection()
+		const module = {}
+
+		function select(el) {
+			selection.selectAllChildren(el)
+		}
+
+		function copy(el) {
+			select(el)
+			document.execCommand('copy')
+		}
+
+		let lastKey, cache
+		function cipher(key) {
+			if(lastKey != key) cache = new IDEA(key)
+			return cache
+		}
+
+		function encrypt() {
+			let res = cipher(key.value).encrypt(message.textContent)
+
+			result.textContent = [...res].map(ch => ch.toString(16)).join(' ')
+		}
+
+		function decrypt() {
+			let bytes = message.textContent.match(/\S{1,2}/g).map(byte => parseInt(byte, 16))
+			result.textContent = cipher(key.value).decrypt(new Uint8Array(bytes))
+		}
+	</script>
+	<script src="./index.js"></script>
+</body>
+</html>

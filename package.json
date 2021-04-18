@@ -1,0 +1,12 @@
+{
+  "name": "idea-cipher",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "test": "nodemon -q ./test.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
