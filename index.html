@@ -49,22 +49,27 @@
 			flex: 1;
 		}
 		#key, #message, button, #result {
-			border: 1px solid black;
+			--color: black;
+			border: 1px solid var(--color);
 			border-radius: 4px;
 			padding: 8px;
 			transition: 0.2s;
 		}
-		#key:focus, #message:focus, button:hover {
-			box-shadow: 0 0 0 2px black;
+		#key.error {
+			border-color: red;
+			--color: red;
 		}
-		.buttons {
+		#key:focus, #message:focus, button:hover {
+			box-shadow: 0 0 0 2px var(--color);
+		}
+		.line {
 			display: flex;
 			flex-wrap: wrap;
 			justify-content: flex-end;
 			align-items: center;
 			margin: 0 -16px 8px 0;
 		}
-		.buttons > * {
+		.line > * {
 			margin: 0 16px 8px 0;
 		}
 		button {
@@ -76,8 +81,8 @@
 	<div class="content">
 		<h1>IDEA Cipher</h1>
 		<div contenteditable id="message" onfocus="select(this)">Message</div>
-		<div class="buttons">
-			<input type="text" placeholder="Key" id="key" autofocus>
+		<div class="line">
+			<input type="text" placeholder="Key" id="key" autofocus oninput="this.className = ''">
 			<div>
 				<b>Mode:</b>
 				<label style="display: inline-flex; align-items: center">
@@ -105,20 +110,24 @@
 		}
 
 		let lastKey, cache
-		function cipher(key) {
-			if(lastKey != key) cache = new IDEA(key)
-			return cache
+		function cipher() {
+			try {
+				if(lastKey != key.value) cache = new IDEA(key.value)
+				return cache
+			} catch(e) {
+				key.className = 'error'
+			}
 		}
 
 		function encrypt() {
-			let res = cipher(key.value).encrypt(message.textContent)
+			let res = cipher().encrypt(message.textContent)
 
 			result.textContent = [...res].map(ch => ch.toString(16)).join(' ')
 		}
 
 		function decrypt() {
 			let bytes = message.textContent.match(/\S{1,2}/g).map(byte => parseInt(byte, 16))
-			result.textContent = cipher(key.value).decrypt(new Uint8Array(bytes))
+			result.textContent = cipher().decrypt(new Uint8Array(bytes))
 		}
 	</script>
 	<script src="./index.js"></script>

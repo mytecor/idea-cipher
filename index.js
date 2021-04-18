@@ -126,6 +126,10 @@ const encoder = new TextEncoder
 class IDEA {
 	constructor(key, mode = ECB) {
 		if(!key) throw Error('Ключ не указан')
+
+		if(key.length < 7)
+			throw Error('The key must be at least 7 bytes long')
+
 		if(typeof key == 'string') {
 			let charKey = encoder.encode(key)
 
@@ -134,9 +138,6 @@ class IDEA {
 			for(let i = 0, j = 0; i < charKey.length; i++, j = (j + 1) % key.length)
 				key[j] ^= charKey[i]
 		}
-
-		if(key.length < 7)
-			throw Error('The key must be at least 7 bytes long')
 
 		this.key = key
 		this.mode = new mode
