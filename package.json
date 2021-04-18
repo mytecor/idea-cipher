@@ -1,6 +1,9 @@
 {
   "name": "idea-cipher",
-  "version": "1.0.0",
+  "description": "International Data Encryption Algorithm js implementation",
+  "repository": "github:mytecor/idea-cipher",
+  "homepage": "mytecor.github.io/idea-cipher",
+  "version": "1.0.1",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -8,5 +11,11 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
-  }
+  },
+  "keywords": [
+    "idea",
+    "cipher",
+    "encryption",
+    "algorithm"
+  ]
 }
