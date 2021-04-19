@@ -66,19 +66,19 @@ function block(dv, offset, keys) {
 		let y3 = add(x3, keys[k++]) // K3
 		let y4 = mul(x4, keys[k++]) // K4
 
-		let y5 = y1 ^ y3
-		let y6 = y2 ^ y4
-
 		// MA-box
-		let y7 = mul(y5, keys[k++]) // K5
-		let y8 = add(y6, y7)
-		let y9 = mul(y8, keys[k++]) // K6
-		let y10 = add(y7, y9)
+		let p = y1 ^ y3
+		let q = y2 ^ y4
 
-		x1 = y1 ^ y9
-		x2 = y3 ^ y9
-		x3 = y2 ^ y10
-		x4 = y4 ^ y10
+		let a = mul(p, keys[k++]) // K5
+		let b = add(q, a)
+		let t = mul(b, keys[k++]) // K6
+		let u = add(a, t)
+
+		x1 = y1 ^ t
+		x2 = y3 ^ t
+		x3 = y2 ^ u
+		x4 = y4 ^ u
 	}
 
 	dv.setUint16(offset,     mul(x1, keys[48]))
